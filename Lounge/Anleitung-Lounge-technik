@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anleitung Lounge Technik - Engel & Völkers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+        :root {
+            --ev-red: #D9000D;
+            --ev-dark: #2c3e50;
+            --ev-grey: #f4f6f8;
+            --ev-light-grey: #ffffff;
+            --shadow-light: 0 5px 15px rgba(0,0,0,0.05);
+            --shadow-strong: 0 8px 25px rgba(0,0,0,0.1);
+            --info-blue: #3498db;
+            --info-bg: #eaf5fc;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.8;
+            color: var(--ev-dark);
+            background-color: var(--ev-grey);
+            margin: 0;
+        }
+
+        .container { 
+            max-width: 950px; 
+            margin: 3rem auto; 
+            padding: 0 1rem; 
+        }
+
+        h1 { 
+            text-align: center; 
+            font-size: 3em; 
+            margin-bottom: 3rem; 
+            color: #1a1a1a;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card { 
+            background: var(--ev-light-grey); 
+            border-radius: 12px; 
+            padding: 2.5rem; 
+            margin-bottom: 2.5rem; 
+            box-shadow: var(--shadow-light);
+            border-top: 4px solid var(--ev-red);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .card h2 { 
+            font-size: 1.9em; 
+            margin-top: 0; 
+            margin-bottom: 1.5rem;
+            color: var(--ev-dark);
+        }
+
+        .step { 
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: center; 
+            gap: 2.5rem; 
+            margin-top: 2rem; 
+            padding-bottom: 2rem; 
+            border-bottom: 1px solid #e9ecef; 
+        }
+
+        .step:last-child { 
+            border-bottom: none; 
+            padding-bottom: 0; 
+        }
+
+        .step-text { 
+            flex: 2; 
+            min-width: 300px; 
+        }
+
+        .step-img { 
+            flex: 1; 
+            text-align: center; 
+            min-width: 250px; 
+        }
+
+        .step-img img { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 8px; 
+            box-shadow: var(--shadow-strong);
+        }
+        
+        .image-pair {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        .image-pair img {
+            max-width: 48%;
+        }
+
+        .clickable-img {
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        .clickable-img:hover {
+            opacity: 0.7;
+        }
+
+        .step-text strong { 
+            font-size: 1.2em; 
+            color: #000; 
+            font-weight: 700;
+        }
+        
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            padding-top: 60px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.9); 
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            animation-name: zoom;
+            animation-duration: 0.4s;
+        }
+
+        @keyframes zoom {
+            from {transform: scale(0.5); opacity: 0;}
+            to {transform: scale(1); opacity: 1;}
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* --- Karussell Styles --- */
+        .slider-container {
+            position: relative;
+            max-width: 400px;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: var(--shadow-strong);
+        }
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+        .slide img {
+            width: 100%;
+            display: block;
+        }
+        .slider-btn {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 12px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            transition: 0.4s ease;
+            user-select: none;
+            background-color: rgba(0,0,0,0.4);
+            border: none;
+        }
+        .prev {
+            left: 0;
+            border-radius: 0 3px 3px 0;
+        }
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .slider-btn:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        /* ---------- PRINT: Karussell als Storyboard ausgeben ---------- */
+        @media print {
+          html, body { background: #fff !important; }
+          /* Cards & Hovereffekte neutralisieren */
+          .card { box-shadow: none !important; transform: none !important; }
+          .card:hover { box-shadow: none !important; }
+
+          /* Modal niemals drucken */
+          .modal { display: none !important; }
+
+          /* Karussell ent-animieren und alle Slides untereinander zeigen */
+          .slider-container { overflow: visible !important; height: auto !important; }
+          .slider-wrapper { transform: none !important; display: block !important; }
+          .slide { display: block !important; width: 100% !important; page-break-inside: avoid; margin: 0 0 12mm 0; }
+          .prev, .next { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Anleitung<br>Lounge Technik</h1>
+        <div class="card">
+            <h2>1. PC starten & Vorbereiten</h2>
+            <div class="step">
+                <div class="step-text"><p><strong>1. Quelle auswählen</strong><br>Nimm die Bose Fernbedienung, drücke die Taste "<strong>Source</strong>" und wähle mit den Pfeiltasten "<strong>Computer 2</strong>" aus. Auf der Leinwand erscheint nun der Windows-Anmeldebildschirm.</p></div>
+                <div class="step-img"><img src="https://EV-TeamTech.github.io/Bilder/Lounge/bosefernbedienung.png" alt="Bose Fernbedienung" class="clickable-img" width="120"></div>
+            </div>
+             <div class="step">
+                <div class="step-text"><p><strong>2. Am PC anmelden</strong><br>Melde dich mit deinem persönlichen Account am Windows-PC an.</p></div>
+                <div class="step-img"><img src="https://EV-TeamTech.github.io/Bilder/Lounge/windows-login.png" alt="Windows Anmeldebildschirm"></div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>2. Software & Hardware vorbereiten</h2>
+            <div class="step">
+                <div class="step-text"><p><strong>1. Mevo App starten</strong><br>Auf dem Desktop findest du die Datei "<strong>Mevo.exe</strong>". Starte sie mit einem Doppelklick. Falls sich ein Fenster öffnet, klicke auf "OK" oder "Zulassen".</p></div>
+                <div class="step-img"><img src="https://EV-TeamTech.github.io/Bilder/Lounge/Mevo icon.png" alt="Mevo.exe auf dem Desktop"></div>
+            </div>
+            <div class="step">
+                <div class="step-text"><p><strong>2. Kamera & Mikrofone holen</strong><br>Nimm die Mevo-Kamera und die "DJI Mic" Box aus der Schublade unter dem Beamer.</p></div>
+                 <div class="step-img image-pair">
+                    <img src="https://EV-TeamTech.github.io/Bilder/Lounge/Dji-mikrofonset.png" alt="DJI Mic Box">
+                     <img src="https://EV-TeamTech.github.io/Bilder/Lounge/Kamera.png" alt="Mevo Kamera">
+                 </div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>3. Mikrofon mit Kamera verbinden</h2>
+            <div class="step">
+                <div class="step-text"><p><strong>1. Komponenten entnehmen</strong><br>Nimm ein Mikrofon und den Transmitter (Empfänger) aus der DJI Ladebox. Der Transmitter hat bereits einen USB-C Adapter aufgesteckt.</p></div>
+                <div class="step-img"><img src="https://EV-TeamTech.github.io/Bilder/Lounge/Dji-Mikro-Transmitter.png" alt="DJI Mikrofon und Transmitter"></div>
+            </div>
+            <div class="step">
+                <div class="step-text"><p><strong>2. Transmitter anstecken (WICHTIG!)</strong><br>Stecke den Transmitter an der Rückseite der Kamera an. Achte darauf, dass ein <strong>kleiner Spalt</strong> zwischen Transmitter und Kameragehäuse bleibt. Sitzt er komplett bündig, ist er nicht richtig verbunden!</p></div>
+                <div class="step-img image-pair">
+                     <img src="https://EV-TeamTech.github.io/Bilder/Lounge/Trans-Kamera-richtig.png" alt="Korrekter Anschluss mit Spalt">
+                     <img src="https://EV-TeamTech.github.io/Bilder/Lounge/Trans-Kamera-falsch.png" alt="Falscher Anschluss ohne Spalt">
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>4. Verbindung herstellen & Meeting starten</h2>
+            <div class="step">
+                <div class="step-text"><p><strong>1. Kamera einschalten</strong><br>Schalte die Kamera ein, indem du den Knopf an der <strong>Rückseite</strong> kurz gedrückt hältst. Das Licht an der <strong>Vorderseite</strong> beginnt grün zu blinken.</p></div>
+                <div class="step-img"><img src="https://ev-teamtech.github.io/Bilder/Lounge/Kamera-gr%C3%BCn.png" alt="Mevo Kamera einschalten"></div>
+            </div>
+            <div class="step">
+                <div class="step-text"><p><strong>2. Kamera in Software verbinden</strong><br>Klicke in der Windows-Taskleiste auf den kleinen Pfeil (▲) und dann auf das Mevo-Symbol. Im erscheinenden Fenster sollte die Kamera auftauchen. Klicke darauf, um sie zu verbinden (ein Haken ✓ erscheint).</p></div>
+                <div class="step-img">
+                    <div class="slider-container">
+                        <div class="slider-wrapper">
+                            <div class="slide"><img src="https://ev-teamtech.github.io/Bilder/Lounge/Meevo-software1.png" alt=""></div>
+                            <div class="slide"><img src="https://ev-teamtech.github.io/Bilder/Lounge/Meevo-software2.png" alt=""></div>
+                            <div class="slide"><img src="https://ev-teamtech.github.io/Bilder/Lounge/Meevo-software3.png" alt=""></div>
+                            <div class="slide"><img src="https://ev-teamtech.github.io/Bilder/Lounge/Meevo-software4.png" alt=""></div>
+                        </div>
+                        <button class="slider-btn prev">&#10094;</button>
+                        <button class="slider-btn next">&#10095;</button>
+                    </div>
+                </div>
+            </div>
+             <div class="step">
+                <div class="step-text"><p><strong>3. Mikrofon aktivieren & Meeting beitreten</strong><br>Das DJI-Mikrofon schaltet sich meist automatisch ein. Wenn nicht, halte den Knopf 1 Sekunde gedrückt. Das Licht am Mikrofon leuchtet dann <strong>grün oder orange</strong>. Du kannst nun deinem Meeting beitreten.</p></div>
+                <div class="step-img"><img src="https://ev-teamtech.github.io/Bilder/Lounge/Mikrofon-gruen.png" alt="DJI Mikrofon einschalten"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- The Modal -->
+    <div id="imageModal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // --- Modal Logic ---
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("modalImage");
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.clickable-img')) {
+                modal.style.display = "block";
+                modalImg.src = event.target.src;
+            }
+        });
+        var span = document.getElementsByClassName("close")[0];
+        function closeModal() {
+            modal.style.display = "none";
+        }
+        span.onclick = closeModal;
+        modal.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // --- Carousel Logic ---
+        const sliderWrapper = document.querySelector('.slider-wrapper');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let slideIndex = 0;
+        
+        if (sliderWrapper) {
+            const slides = document.querySelectorAll('.slide');
+            const showSlide = (index) => {
+                sliderWrapper.style.transform = `translateX(${-index * 100}%)`;
+            };
+
+            prevBtn.addEventListener('click', () => {
+                slideIndex = (slideIndex > 0) ? slideIndex - 1 : slides.length - 1;
+                showSlide(slideIndex);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                slideIndex = (slideIndex < slides.length - 1) ? slideIndex + 1 : 0;
+                showSlide(slideIndex);
+            });
+        }
+    </script>
+
+    <!-- PRINT-JS: Optional, stellt sicher, dass beim Drucken der Transform zurückgesetzt ist -->
+    <script>
+      (function(){
+        function prepareForPrint(){
+          try {
+            var wrapper = document.querySelector('.slider-wrapper');
+            if (wrapper) wrapper.style.transform = 'none';
+          } catch(e) {}
+        }
+        function cleanupAfterPrint(){
+          try {
+            var wrapper = document.querySelector('.slider-wrapper');
+            if (wrapper) wrapper.style.transform = `translateX(${- (window.slideIndex || 0) * 100}%)`;
+          } catch(e) {}
+        }
+        if (window.matchMedia) {
+          var mql = window.matchMedia('print');
+          mql.addEventListener && mql.addEventListener('change', e => e.matches ? prepareForPrint() : cleanupAfterPrint());
+          mql.addListener && mql.addListener(e => e.matches ? prepareForPrint() : cleanupAfterPrint());
+        }
+        window.addEventListener('beforeprint', prepareForPrint);
+        window.addEventListener('afterprint', cleanupAfterPrint);
+      })();
+    </script>
+</body>
+</html>
